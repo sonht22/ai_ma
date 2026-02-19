@@ -1,0 +1,17 @@
+# Bỏ qua môi trường ảo
+.venv/
+
+# Bỏ qua các thư mục đóng gói phần mềm
+build/
+dist/
+*.spec
+
+# Bỏ qua thư mục rác của Python
+__pycache__/
+
+# Bỏ qua dữ liệu truyện tranh sinh ra trong quá trình chạy thử
+data/
+
+# Bỏ qua các file nén
+*.zip
+*.rar
