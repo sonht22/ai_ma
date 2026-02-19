@@ -1,0 +1,14 @@
+
+B. Sự đồng nhất nhân vật (Character Consistency)
+
+Hiện trạng: Trí tuệ nhân tạo (Hugging Face) đang vẽ mỗi trang một kiểu. Trang 1 chú rồng màu xanh, trang 2 chú rồng có thể biến thành màu đỏ hoặc đổi nét vẽ.
+
+Nâng cấp: Đưa thêm tham số Seed (mã hạt giống ngẫu nhiên) vào code vẽ tranh để khóa khuôn mặt và bối cảnh lại, giúp nhân vật từ trang 1 đến trang cuối giống nhau đến 90%.
+
+C. Hiệu ứng chữ chạy theo giọng đọc (Subtitles)
+
+Hiện trạng: Chữ hiện cố định ở khung bên dưới.
+
+Nâng cấp: Làm cho chữ đổi màu khớp với giọng đọc (giống tính năng tạo phụ đề tự động của các phần mềm dựng video chuyên nghiệp). Điều này cực kỳ thu hút sự chú ý của trẻ nhỏ khi theo dõi câu chuyện.
+
+Bạn muốn chúng ta xử lý vấn đề nào trước? Tìm cách sửa cái lỗi "Offline" kia cho dứt điểm, hay bắt tay vào làm luôn tính năng Ghép ảnh và nhạc thành Video MP4?

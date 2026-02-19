@@ -1,0 +1,6 @@
+streamlit
+AIzaSyCvg_812SSuJCFlQ3g3TQeVUJQAsT7UGPs
+"gemini-flash-latest"   self.models_to_try = ["gemini-flash-latest" ]
+
+0348fb73-8c8c-46cf-a847-423066ecdcb1 key leo
+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
