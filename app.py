@@ -1,5 +1,9 @@
 import customtkinter as ctk
 import os
+from dotenv import load_dotenv
+
+# Lệnh này sẽ tự động tìm file .env và nạp các thông tin vào bộ nhớ
+load_dotenv(override=True)
 import threading
 import asyncio
 import pygame
@@ -20,8 +24,11 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
         
-        # 👇 1. DÁN API KEY GOOGLE VÀO ĐÂY 👇
-        self.GOOGLE_API_KEY = "AIzaSyCvg_812SSuJCFlQ3g3TQeVUJQAsT7UGPs" 
+        # Lấy key từ .env
+        self.GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+        
+        # THÊM DÒNG NÀY ĐỂ TEST:
+        print(f"👉 DÒNG TEST KEY: {self.GOOGLE_API_KEY}")
         
         try: pygame.mixer.init()
         except: print("Lỗi âm thanh")

@@ -1,5 +1,6 @@
 # Bỏ qua môi trường ảo
 .venv/
+.env
 
 # Bỏ qua các thư mục đóng gói phần mềm
 build/
