@@ -5,8 +5,8 @@ import re
 class StoryBrain:
     def __init__(self, api_key):
         self.api_key = api_key
-        # Danh sách các model AI để thử (ưu tiên Flash vì nó nhanh và rẻ)
-        self.models_to_try = ["gemini-flash-latest" ]
+        # 👇 ĐÃ SỬA DÒNG NÀY: Cập nhật tên Model chuẩn của Google, có kèm model dự phòng
+        self.models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash"] 
         
         try:
             self.client = genai.Client(api_key=api_key)
@@ -64,7 +64,7 @@ class StoryBrain:
                             print(f"⚠️ AI lỡ tạo {len(pages)} trang. Đang cắt xén về đúng {num_pages} trang!")
                             pages = pages[:num_pages] 
                             
-                        print(f"✅ AI đã viết xong {len(pages)} trang truyện!")
+                        print(f"✅ AI đã viết xong {len(pages)} trang truyện bằng model {model}!")
                         return pages
             except Exception as e:
                 print(f"⚠️ {model} gặp lỗi: {e}")
