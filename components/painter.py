@@ -18,10 +18,24 @@ class AI_Painter:
         self.story_seed = random.randint(1, 4294967295)
         print(f"🔐 Đã khởi tạo Họa sĩ. Khóa nhân vật với Seed: {self.story_seed}")
 
-    def generate_image(self, user_prompt, output_path):
+    # 👇 ĐÃ SỬA DÒNG NÀY: Thêm biến 'ratio' vào hàm
+    def generate_image(self, user_prompt, output_path, ratio="Ngang (16:9)"):
         if len(self.hf_token) < 10:
             print("❌ Lỗi: Chưa nhập Hugging Face Token.")
             return False
+
+        # 👇 ĐÃ THÊM BƯỚC NÀY: Quy đổi Tỷ lệ khung hình ra Pixel (Width x Height)
+        if ratio == "Ngang (16:9)":
+            width = 1024
+            height = 576
+        elif ratio == "Dọc (9:16)":
+            width = 576
+            height = 1024
+        else: # Mặc định nếu có lỗi
+            width = 1024
+            height = 576
+            
+        print(f"📏 Cấu hình kích thước ảnh: {width}x{height}")
 
         headers = {"Authorization": f"Bearer {self.hf_token}"}
         
@@ -33,12 +47,14 @@ class AI_Painter:
         )
         neg_prompt = "ugly, deformed, scary, creepy faces, dark shadows, gloomy, blurry, grainy, low resolution, realistic, adult style, cluttered background, text, watermark"
 
-        # ĐƯA SEED VÀO GÓI LỆNH YÊU CẦU VẼ
+        # ĐƯA SEED, CHIỀU RỘNG VÀ CHIỀU CAO VÀO GÓI LỆNH YÊU CẦU VẼ
         payload = {
             "inputs": full_prompt,
             "parameters": {
                 "negative_prompt": neg_prompt,
-                "seed": self.story_seed # Mọi bức ảnh trong truyện này đều xài chung 1 Seed
+                "seed": self.story_seed, # Mọi bức ảnh trong truyện này đều xài chung 1 Seed
+                "width": width,          # Truyền chiều rộng
+                "height": height         # Truyền chiều cao
             }
         }
 

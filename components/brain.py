@@ -5,7 +5,7 @@ import re
 class StoryBrain:
     def __init__(self, api_key):
         self.api_key = api_key
-        # 👇 ĐÃ SỬA DÒNG NÀY: Cập nhật tên Model chuẩn của Google, có kèm model dự phòng
+        # Cập nhật tên Model chuẩn của Google, có kèm model dự phòng
         self.models_to_try = ["gemini-2.5-flash", "gemini-1.5-flash"] 
         
         try:
@@ -15,7 +15,7 @@ class StoryBrain:
             print(f"❌ Lỗi kết nối Google AI: {e}")
             self.is_connected = False
 
-    def generate_story_pages(self, user_request, num_pages=1, story_length="150 ký tự"):
+    def generate_story_pages(self, user_request, num_pages=1, story_length=""):
         backup_story = []
         for i in range(num_pages):
             backup_story.append({
@@ -26,20 +26,26 @@ class StoryBrain:
         if not self.is_connected:
             return backup_story
 
-        # BỘ LUẬT THÉP: Ép AI tuân thủ chính xác Số trang và Độ dài
+        # BỘ LUẬT THÉP CẢI TIẾN: Hỗ trợ cả Sáng tác và Chia trang truyện có sẵn
         prompt = f"""
         Vai trò: Biên kịch truyện tranh thiếu nhi chuyên nghiệp.
-        
-        YÊU CẦU TỪ NGƯỜI DÙNG: "{user_request}"
-        
+
+        NỘI DUNG TỪ NGƯỜI DÙNG:
+        "{user_request}"
+
+        NHIỆM VỤ:
+        Phân tích 'NỘI DUNG TỪ NGƯỜI DÙNG'.
+        - Nếu đó là một chủ đề/ý tưởng ngắn, hãy SÁNG TÁC một câu chuyện hoàn chỉnh dựa trên chủ đề đó.
+        - Nếu đó là một ĐOẠN VĂN BẢN DÀI (một câu chuyện đã viết sẵn), tuyệt đối KHÔNG ĐƯỢC tóm tắt hay cắt xén. Hãy CHIA ĐỀU toàn bộ văn bản đó thành các trang truyện.
+
         QUY ĐỊNH BẮT BUỘC:
-        1. SỐ TRANG: Bắt buộc chia truyện thành ĐÚNG {num_pages} trang. Mảng JSON của bạn chỉ được phép có đúng {num_pages} phần tử. Tuyệt đối không tạo nhiều hơn!
-        2. ĐỘ DÀI MỖI TRANG: {story_length}. Bạn hãy căn chỉnh số từ sao cho phần 'text' của mỗi trang đáp ứng đúng giới hạn ký tự/độ dài này.
-        3. HÌNH ẢNH: Phần 'img_prompt' viết bằng tiếng Anh mô tả bối cảnh để AI vẽ tranh.
-        
-        ĐỊNH DẠNG OUTPUT (JSON List):
+        1. SỐ TRANG: Bắt buộc chia truyện thành ĐÚNG {num_pages} trang. Mảng JSON chỉ được phép có đúng {num_pages} phần tử.
+        2. NỘI DUNG: {story_length} Phải đảm bảo tính liên tục của câu chuyện.
+        3. HÌNH ẢNH: Phần 'img_prompt' viết bằng TIẾNG ANH, mô tả chi tiết bối cảnh, nhân vật, hành động để AI vẽ tranh minh họa cho trang đó.
+
+        ĐỊNH DẠNG OUTPUT BẮT BUỘC (JSON List):
         [
-          {{ "text": "Nội dung tiếng Việt...", "img_prompt": "Mô tả tranh tiếng Anh..." }}
+          {{ "text": "Nội dung tiếng Việt trang 1...", "img_prompt": "Mô tả tranh tiếng Anh..." }}
         ]
         """
 
@@ -51,7 +57,6 @@ class StoryBrain:
                 )
                 
                 raw_text = response.text.strip()
-                # Dùng Regex để trích xuất đúng phần mảng JSON ra
                 match = re.search(r'\[.*\]', raw_text, re.DOTALL)
                 
                 if match:
@@ -59,7 +64,6 @@ class StoryBrain:
                     pages = json.loads(json_str)
                     
                     if isinstance(pages, list):
-                        # BƯỚC XỬ LÝ QUYẾT ĐỊNH: Cắt bỏ phần thừa nếu AI tạo lố trang
                         if len(pages) > num_pages:
                             print(f"⚠️ AI lỡ tạo {len(pages)} trang. Đang cắt xén về đúng {num_pages} trang!")
                             pages = pages[:num_pages] 
